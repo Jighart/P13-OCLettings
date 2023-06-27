@@ -31,12 +31,19 @@ jobs:
             pytest
 
   containerize:
-    machine: true
+    docker:
+      - image: cimg/python:3.10.2
+    resource_class: medium
     steps:
       - checkout
-      - run: echo "$DOCKER_PASSWORD" | docker login --username jighart --password-stdin
-      - run: docker build --tag jighart/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} .
-      - run: docker push jighart/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
+      - setup_remote_docker
+      - run:
+          name: Containerize
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
+            docker build -t image_oc_lettings_site .
+            docker tag image_oc_lettings_site $DOCKER_LOGIN/$DOCKER_REPO:$CIRCLE_SHA1
+            docker push $DOCKER_LOGIN/$DOCKER_REPO:$CIRCLE_SHA1
 
 workflows:
   main:
