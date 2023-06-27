@@ -1,5 +1,6 @@
 FROM python:3.10-alpine
 ENV PYTHONUNBUFFERED 1
+ENV SENTRY_DSN $SENTRY_DSN
 RUN mkdir /p13_lettings
 WORKDIR /p13_lettings
 COPY requirements.txt /p13_lettings/
