@@ -1,0 +1,47 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.10.2
+    resource_class: small
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: Initialize venv / Install deps
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - ".venv"
+      - run:
+          name: Linting
+          command: |
+            . venv/bin/activate
+            flake8
+      - run:
+          name: Run tests
+          command: |
+            . venv/bin/activate
+            pytest
+
+  containerize:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "$DOCKER_PASSWORD" | docker login --username jighart --password-stdin
+      - run: docker build --tag jighart/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} .
+      - run: docker push jighart/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
+      - containerize:
+          requires:
+            - build-and-test
