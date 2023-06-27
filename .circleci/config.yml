@@ -42,8 +42,8 @@ jobs:
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
             docker build -t image_oc_lettings_site . -f ./project/Dockerfile
-            docker tag image_oc_lettings_site $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
-            docker push $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+            docker tag image_oc_lettings_site $DOCKER_LOGIN/${CIRCLE_PROJECT_REPONAME}:$CIRCLE_SHA1
+            docker push $DOCKER_LOGIN/${CIRCLE_PROJECT_REPONAME}:$CIRCLE_SHA1
 
 workflows:
   main:
