@@ -52,7 +52,3 @@ workflows:
       - containerize:
           requires:
             - build-and-test
-          filters:
-            branches:
-              only:
-                - main
