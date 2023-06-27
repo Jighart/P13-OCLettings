@@ -30,7 +30,6 @@ jobs:
             . venv/bin/activate
             pytest
 
-
   containerize:
     docker:
       - image: cimg/python:3.10.2
@@ -45,7 +44,6 @@ jobs:
             docker build -t image_oc_lettings_site .
             docker tag image_oc_lettings_site $DOCKER_LOGIN/$DOCKER_REPO:$CIRCLE_SHA1
             docker push $DOCKER_LOGIN/$DOCKER_REPO:$CIRCLE_SHA1
-            
 
 workflows:
   main:
