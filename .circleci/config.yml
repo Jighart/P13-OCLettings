@@ -50,7 +50,7 @@ jobs:
   deploy-to-azure:
     docker:
       # replace with your preferred image
-      - image: $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
+      - image: cimg/base:stable
     steps:
       - run:
           name: Deployment
