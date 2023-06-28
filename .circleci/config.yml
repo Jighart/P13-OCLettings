@@ -50,7 +50,7 @@ jobs:
   deploy-to-azure:
     docker:
       # replace with your preferred image
-      - image: cimg/p13-oclettings:latest
+      - image: cimg/base:stable
     steps:
       - azure-acr/build-and-push-image:
           registry-name: oclettings
