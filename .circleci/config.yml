@@ -46,16 +46,14 @@ jobs:
 
   deploy-to-azure:
     docker:
-      # replace with your preferred image
-      - image: cimg/base:stable
+      - image: cimg/python:3.10.2
     steps:
       - run:
           name: Deployment
           command: |
             echo "$AZURE_PASSWORD" | docker login oclettings.azurecr.io --username $AZURE_USERNAME --password-stdin
-            docker tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
-            docker push $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
-            
+            docker tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1} oclettings.azurecr.io/p13-oclettings:${CIRCLE_SHA1}
+            docker push oclettings.azurecr.io/p13-oclettings:${CIRCLE_SHA1}
 
 workflows:
   main:
