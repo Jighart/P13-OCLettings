@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  azure-acr: circleci/azure-acr@0.2.1
+
 jobs:
   build-and-test:
     docker:
@@ -44,6 +47,18 @@ jobs:
             docker build --tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1} .
             docker push $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
 
+  deploy-to-azure:
+    docker:
+      # replace with your preferred image
+      - image: cimg/p13-oclettings:latest
+    steps:
+      - azure-acr/build-and-push-image:
+          registry-name: oclettings
+          login-server-name: oclettings.azurecr.io
+          repo: oclettings.azurecr.io/oclettings
+          azure-username: oclettings
+          azure-password: MjaPRrkmkTPPAy3k95j/MbX6K2/crYce9hQ2RlwB3q+ACRBt2w8E
+
 workflows:
   main:
     jobs:
@@ -51,3 +66,7 @@ workflows:
       - containerize:
           requires:
             - build-and-test
+      - deploy-to-azure:
+          requires:
+            - build-and-test
+            - containerize
