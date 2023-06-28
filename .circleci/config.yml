@@ -43,15 +43,20 @@ jobs:
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
             docker build --tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1} .
             docker push $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
+
+  deploy-to-azure:
+    docker:
+      - image: cimg/python:3.10.2
+    resource_class: medium
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Deployment
+          command: |
             echo "$AZURE_PASSWORD" | docker login oclettings.azurecr.io --username $AZURE_USERNAME --password-stdin
-            docker push oclettings.azurecr.io/p13-oclettings
-
-
+            docker images
 
 workflows:
   main:
     jobs:
-      - build-and-test
-      - containerize:
-          requires:
-            - build-and-test
+      - deploy-to-azure
