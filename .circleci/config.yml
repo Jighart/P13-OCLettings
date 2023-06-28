@@ -41,7 +41,7 @@ jobs:
           name: Containerize
           command: |
             echo "$AZURE_PASSWORD" | docker login oclettings.azurecr.io --username $AZURE_USERNAME --password-stdin
-            docker build --tag p13-oclettings:${CIRCLE_SHA1} .
+            docker build --tag p13-oclettings:${CIRCLE_SHA1} oclettings.azurecr.io/p13-oclettings
             docker push oclettings.azurecr.io/p13-oclettings
 
   deploy-to-azure:
