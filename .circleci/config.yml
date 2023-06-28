@@ -61,6 +61,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - containerize:
-          requires:
-            - build-and-test
+      - containerize
