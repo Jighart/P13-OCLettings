@@ -54,8 +54,7 @@ jobs:
           name: Deployment
           command: |
             echo "$AZURE_PASSWORD" | docker login oclettings.azurecr.io --username $AZURE_USERNAME --password-stdin
-            docker tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1} oclettings.azurecr.io/p13-oclettings:${CIRCLE_SHA1}
-            docker push oclettings.azurecr.io/p13-oclettings:${CIRCLE_SHA1}
+            docker push oclettings.azurecr.io/p13-oclettings:latest
 
 workflows:
   main:
