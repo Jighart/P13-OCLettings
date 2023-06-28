@@ -56,8 +56,6 @@ jobs:
           registry-name: oclettings
           login-server-name: oclettings.azurecr.io
           repo: oclettings.azurecr.io/oclettings
-          azure-username: $AZURE_USERNAME
-          azure-password: $AZURE_PASSWORD
 
 workflows:
   main:
