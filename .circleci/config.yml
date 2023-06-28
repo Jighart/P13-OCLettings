@@ -46,7 +46,7 @@ jobs:
 
   deploy-to-azure:
     docker:
-      - image: $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
+      - image: $DOCKER_LOGIN/p13-oclettings:latest
     resource_class: medium
     steps:
       - setup_remote_docker
