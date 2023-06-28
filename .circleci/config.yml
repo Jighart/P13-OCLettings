@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  azure-acr: circleci/azure-acr@0.2.1
+
 jobs:
   build-and-test:
     docker:
