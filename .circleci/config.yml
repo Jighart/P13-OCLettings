@@ -40,28 +40,20 @@ jobs:
       - run:
           name: Containerize
           command: |
-            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
             docker build --tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1} .
-            docker push $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
-
-  deploy-to-azure:
-    machine:
-      image: ubuntu-2004:current
-    resource_class: medium
-    steps:
-      - checkout
+            docker images
       - run:
-          name: Deployment
+          name: Deploy to DockerHub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
+            docker push $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
+      - run:
+          name: Deploy to Azure
           command: |
             echo "$AZURE_PASSWORD" | docker login oclettings.azurecr.io --username $AZURE_USERNAME --password-stdin
-            docker images
-            docker tag $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1} oclettings.azurecr.io/p13-oclettings
-            docker push oclettings.azurecr.io/p13-oclettings
+            docker push $DOCKER_LOGIN/p13-oclettings:${CIRCLE_SHA1}
 
 workflows:
   main:
     jobs:
       - containerize
-      - deploy-to-azure:
-          requires:
-            - containerize
