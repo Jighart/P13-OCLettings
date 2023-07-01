@@ -37,10 +37,12 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - variables:
+          - docker-image-name: lower(${CIRCLE_PROJECT_REPONAME})
       - run:
           name: Building container
           command: |
-            docker build --tag $DOCKER_LOGIN/lower($CIRCLE_PROJECT_REPONAME):${CIRCLE_SHA1} .
+            docker build --tag $DOCKER_LOGIN/variable.docker-image-name:${CIRCLE_SHA1} .
             docker images
       - run:
           name: Deploy to DockerHub
