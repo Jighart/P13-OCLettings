@@ -30,6 +30,21 @@ jobs:
             . venv/bin/activate
             pytest
 
+  build-sentry:
+    docker:
+      - image: circleci/node:4.8.2
+    environment:
+      SENTRY_ORG: jighart
+      SENTRY_PROJECT: c-p13
+    steps:
+      - checkout # check out the code in the project directory
+      - run: | 
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits --auto $SENTRY_RELEASE
+          sentry-cli releases finalize $SENTRY_RELEASE
+
   containerize-and-deploy:
     docker:
       - image: cimg/python:3.10.2
@@ -62,6 +77,7 @@ workflows:
   main:
     jobs:
       - build-and-test
+      - build-sentry
       - containerize-and-deploy:
           requires:
             - build-and-test
