@@ -32,15 +32,17 @@ jobs:
 
   build-sentry:
     docker:
-      - image: circleci/node:4.8.2
+      - image: cimg/node:4.8.2
     steps:
       - checkout # check out the code in the project directory
-      - run: | 
-          curl -sL https://sentry.io/get-cli/ | bash
-          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
-          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
-          sentry-cli releases set-commits --auto $SENTRY_RELEASE
-          sentry-cli releases finalize $SENTRY_RELEASE
+      - run:
+          name: Building Sentry release
+          command: |
+            curl -sL https://sentry.io/get-cli/ | bash
+            export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+            sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+            sentry-cli releases set-commits --auto $SENTRY_RELEASE
+            sentry-cli releases finalize $SENTRY_RELEASE
 
   containerize-and-deploy:
     docker:
@@ -74,7 +76,13 @@ workflows:
   main:
     jobs:
       - build-and-test
-      - build-sentry
+      - build-sentry:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only:
+                - main
       - containerize-and-deploy:
           requires:
             - build-and-test
