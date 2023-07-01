@@ -33,9 +33,6 @@ jobs:
   build-sentry:
     docker:
       - image: circleci/node:4.8.2
-    environment:
-      SENTRY_ORG: jighart
-      SENTRY_PROJECT: c-p13
     steps:
       - checkout # check out the code in the project directory
       - run: | 
