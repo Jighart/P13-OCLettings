@@ -32,7 +32,7 @@ jobs:
 
   containerize-and-deploy:
     docker:
-      - image: cimg/python:3.10.2
+      - image: cimg/python:stable
     resource_class: medium
     steps:
       - checkout
@@ -46,14 +46,13 @@ jobs:
           name: Building container
           command: |
             docker build --tag $DOCKER_LOGIN/${DOCKER_NAME} .
-            docker images
       - run:
-          name: Deploy to DockerHub
+          name: Deploying to DockerHub
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/${DOCKER_NAME}
       - run:
-          name: Deploy to Azure
+          name: Deploying to Azure
           command: |
             echo "$AZURE_PASSWORD" | docker login ${AZURE_REPO_URL} --username $AZURE_USERNAME --password-stdin
             docker push $DOCKER_LOGIN/${DOCKER_NAME}
@@ -61,7 +60,10 @@ jobs:
 workflows:
   main:
     jobs:
+      - build-and-test
       - containerize-and-deploy:
+          requires:
+            - build-and-test
           filters:
             branches:
               only:
