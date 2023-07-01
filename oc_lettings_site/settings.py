@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', default=get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', f'{os.getenv("HOST_NAME")}.azurewebsites.net']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', f'{os.environ.get("HOST_NAME")}.azurewebsites.net']
 
 
 # Application definition
