@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Building container
           command: |
-            docker build --tag $DOCKER_LOGIN/${{lower(CIRCLE_PROJECT_REPONAME)}}:${CIRCLE_SHA1} .
+            docker build --tag $DOCKER_LOGIN/lower($CIRCLE_PROJECT_REPONAME):${CIRCLE_SHA1} .
             docker images
       - run:
           name: Deploy to DockerHub
