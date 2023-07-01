@@ -40,18 +40,18 @@ jobs:
       - run:
           name: Building container
           command: |
-            docker build --tag $DOCKER_LOGIN/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} .
+            docker build --tag $DOCKER_LOGIN/lower(${CIRCLE_PROJECT_REPONAME}):${CIRCLE_SHA1} .
             docker images
       - run:
           name: Deploy to DockerHub
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push $DOCKER_LOGIN/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
+            docker push $DOCKER_LOGIN/lower(${CIRCLE_PROJECT_REPONAME}):${CIRCLE_SHA1}
       - run:
           name: Deploy to Azure
           command: |
             echo "$AZURE_PASSWORD" | docker login ${AZURE_REPO_URL} --username $AZURE_USERNAME --password-stdin
-            docker push $DOCKER_LOGIN/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}
+            docker push $DOCKER_LOGIN/lower(${CIRCLE_PROJECT_REPONAME}):${CIRCLE_SHA1}
 
 workflows:
   main:
