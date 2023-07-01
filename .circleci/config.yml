@@ -56,7 +56,7 @@ jobs:
           command: |
             echo "$AZURE_PASSWORD" | docker login $AZURE_REPO_URL --username $AZURE_USERNAME --password-stdin
             docker tag $DOCKER_LOGIN/$DOCKER_NAME $AZURE_REPO_URL/$DOCKER_NAME
-            docker push $DOCKER_LOGIN/$DOCKER_NAME
+            docker push $AZURE_REPO_URL/$DOCKER_NAME
 
 workflows:
   main:
