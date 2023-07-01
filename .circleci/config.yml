@@ -34,7 +34,7 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
     resource_class: medium
-    variables:
+    parameters:
       - docker-image-name: lower(${CIRCLE_PROJECT_REPONAME})
     steps:
       - checkout
