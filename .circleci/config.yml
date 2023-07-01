@@ -32,7 +32,7 @@ jobs:
 
   containerize-and-deploy:
     docker:
-      - image: cimg/python:stable
+      - image: cimg/python:3.10.2
     resource_class: medium
     steps:
       - checkout
