@@ -34,26 +34,29 @@ jobs:
     docker:
       - image: cimg/python:3.10.2
     resource_class: medium
-    parameters:
-      - docker-image-name: lower(${CIRCLE_PROJECT_REPONAME})
     steps:
       - checkout
       - setup_remote_docker
       - run:
+          name: Generating container name
+          command: |
+            DOCKER_NAME="$(echo "${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}" | tr '[:upper:]' '[:lower:]')"
+            echo "export DOCKER_NAME=${DOCKER_NAME}" >> ${BASH_ENV}
+      - run:
           name: Building container
           command: |
-            docker build --tag $DOCKER_LOGIN/variable.docker-image-name:${CIRCLE_SHA1} .
+            docker build --tag $DOCKER_LOGIN/${DOCKER_NAME} .
             docker images
       - run:
           name: Deploy to DockerHub
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push $DOCKER_LOGIN/${lower(CIRCLE_PROJECT_REPONAME)}:${CIRCLE_SHA1}
+            docker push $DOCKER_LOGIN/${DOCKER_NAME}
       - run:
           name: Deploy to Azure
           command: |
             echo "$AZURE_PASSWORD" | docker login ${AZURE_REPO_URL} --username $AZURE_USERNAME --password-stdin
-            docker push $DOCKER_LOGIN/${lower(CIRCLE_PROJECT_REPONAME)}:${CIRCLE_SHA1}
+            docker push $DOCKER_LOGIN/${DOCKER_NAME}
 
 workflows:
   main:
