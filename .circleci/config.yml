@@ -56,6 +56,7 @@ jobs:
           command: |
             DOCKER_NAME="$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')"
             echo "export DOCKER_NAME=${DOCKER_NAME}" >> ${BASH_ENV}
+            echo "$HOST_URL"
       - run:
           name: Building container
           command: |
