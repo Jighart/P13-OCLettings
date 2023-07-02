@@ -47,13 +47,10 @@ jobs:
   containerize-and-deploy:
     docker:
       - image: cimg/python:3.10.2
-    environment:
-      ENV: ci
     resource_class: medium
     steps:
       - checkout
       - setup_remote_docker
-      - run: sh -c env
       - run:
           name: Generating container name
           command: |

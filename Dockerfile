@@ -1,5 +1,6 @@
 FROM python:3.10-alpine
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SECRET_KEY=$DSK
 RUN echo "The ARG variable value is $DJANGO_SECRET_KEY"
 RUN echo "The ARG variable value is $DSK"
 RUN mkdir /p13_lettings
