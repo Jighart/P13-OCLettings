@@ -47,6 +47,8 @@ jobs:
   containerize-and-deploy:
     docker:
       - image: cimg/python:3.10.2
+        environment:
+          DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
     resource_class: medium
     steps:
       - checkout
