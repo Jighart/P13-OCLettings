@@ -1,6 +1,6 @@
 import os
 import sentry_sdk
-# from django.core.management.utils import get_random_secret_key
+from django.core.management.utils import get_random_secret_key
 from sentry_sdk.integrations.django import DjangoIntegration
 from dotenv import load_dotenv
 
@@ -13,7 +13,7 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1@=&4%=hp46(s'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
