@@ -62,6 +62,7 @@ jobs:
             docker build --tag $DOCKER_LOGIN/$DOCKER_NAME \
               --build-arg DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} \
               --build-arg SENTRY_DSN=${SENTRY_DSN} \
+              --build-arg HOST_URL=${HOST_URL} \
               .
       - run:
           name: Deploying to DockerHub
