@@ -47,8 +47,6 @@ jobs:
   containerize-and-deploy:
     docker:
       - image: cimg/python:3.10.2
-        environment:
-          HOST_URL: $HOST_URL
     resource_class: medium
     steps:
       - checkout
