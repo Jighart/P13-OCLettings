@@ -49,15 +49,16 @@ jobs:
       - image: cimg/python:3.10.2
     resource_class: medium
     environment:
-      HOST_URL: $HOST_URL
-      SENTRY_DSN: $SENTRY_DSN
-      DJANGO_SECRET_KEY: $DJANGO_SECRET_KEY
+      HOST_URL: ${HOST_URL}
+      SENTRY_DSN: ${SENTRY_DSN}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Generating container name
           command: |
+            echo "HOST_URL $HOST_URL ${HOST_URL}"
             DOCKER_NAME="$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')"
             echo "export DOCKER_NAME=${DOCKER_NAME}" >> ${BASH_ENV}
             echo "$HOST_URL"
