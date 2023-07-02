@@ -59,6 +59,7 @@ jobs:
           command: |
             DOCKER_NAME="$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')"
             echo "export DOCKER_NAME=${DOCKER_NAME}" >> ${BASH_ENV}
+            echo DOCKER_NAME
             export DJANGO_SECRET_KEY=$DSK
       - run:
           name: Building container
