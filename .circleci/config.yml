@@ -61,7 +61,12 @@ jobs:
       - run:
           name: Building container
           command: |
-            docker build --build-arg DSK=${DSK} --tag $DOCKER_LOGIN/$DOCKER_NAME:$CIRCLE_SHA1 .
+            docker build --tag $DOCKER_LOGIN/$DOCKER_NAME:$CIRCLE_SHA1
+              --build-arg DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+              --build-arg SENTRY_DSN=${SENTRY_DSN}
+              .
+          build-args: |
+            "DJANGO_SECRET_KEY=12345678"
       - run:
           name: Deploying to DockerHub
           command: |
