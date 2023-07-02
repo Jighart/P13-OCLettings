@@ -56,12 +56,10 @@ jobs:
           command: |
             DOCKER_NAME="$(echo "${CIRCLE_PROJECT_REPONAME}" | tr '[:upper:]' '[:lower:]')"
             echo "export DOCKER_NAME=${DOCKER_NAME}" >> ${BASH_ENV}
-            echo $DOCKER_NAME
-            echo $DJANGO_SECRET_KEY
       - run:
           name: Building container
           command: |
-            docker build --tag $DOCKER_LOGIN/$DOCKER_NAME:$CIRCLE_SHA1 \
+            docker build --tag $DOCKER_LOGIN/$DOCKER_NAME \
               --build-arg DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} \
               --build-arg SENTRY_DSN=${SENTRY_DSN} \
               .
@@ -69,12 +67,12 @@ jobs:
           name: Deploying to DockerHub
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push $DOCKER_LOGIN/$DOCKER_NAME:$CIRCLE_SHA1
+            docker push $DOCKER_LOGIN/$DOCKER_NAME
       - run:
           name: Deploying to Azure
           command: |
             echo "$AZURE_PASSWORD" | docker login $AZURE_REPO_URL --username $AZURE_USERNAME --password-stdin
-            docker tag $DOCKER_LOGIN/$DOCKER_NAME:$CIRCLE_SHA1 $AZURE_REPO_URL/$DOCKER_NAME
+            docker tag $DOCKER_LOGIN/$DOCKER_NAME $AZURE_REPO_URL/$DOCKER_NAME
             docker push $AZURE_REPO_URL/$DOCKER_NAME
 
 workflows:
