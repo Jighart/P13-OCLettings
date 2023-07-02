@@ -1,5 +1,7 @@
 FROM python:3.10-alpine
 ENV PYTHONUNBUFFERED 1
+ARG DSK
+ENV DSK $DSK
 RUN mkdir /p13_lettings
 WORKDIR /p13_lettings
 COPY requirements.txt /p13_lettings/
