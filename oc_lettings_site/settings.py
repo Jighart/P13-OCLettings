@@ -1,6 +1,7 @@
 import os
 import environ
 import sentry_sdk
+from django.core.management.utils import get_random_secret_key
 from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env(
@@ -23,7 +24,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', env('HOST_URL')]
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', f'{env("HOST_URL")}']
 
 
 # Application definition
