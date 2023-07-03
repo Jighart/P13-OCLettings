@@ -36,7 +36,7 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run:
-          name: Building Sentry release
+          name: Sentry release
           command: |
             curl -sL https://sentry.io/get-cli/ | bash
             export SENTRY_RELEASE=$(sentry-cli releases propose-version)
