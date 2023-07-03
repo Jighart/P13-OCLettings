@@ -71,7 +71,9 @@ exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel 
 <a name="env"></a>
 ## Variables d'environnement : fichier *.env*
 
-Exemple de fichier *.env* à créer :
+Le fichier *.env* est généré automatiquement lors de la création de l'image Docker.
+
+Pour une utilisation locale, le fichier *.env* est à créer manuellement selon ce modèle :
 
 ```
 DJANGO_SECRET_KEY=<Your Django Key>
@@ -164,7 +166,6 @@ Pour faire fonctionner le pipeline CircleCI, il est nécessaire de préciser des
 
 | Variable CircleCI | Description                                                                             |
 |-------------------|-----------------------------------------------------------------------------------------|
-| DJANGO_SECRET_KEY | Clé secrète Django                                                                      |
 | SENTRY_DSN        | URL pour le projet Sentry (voir [Sentry](#sentry))                                      |
 | DOCKER_LOGIN      | Nom d'utilisateur du compte Docker                                                      |
 | DOCKER_PASSWORD   | Mot de passe du compte Docker                                                           |
