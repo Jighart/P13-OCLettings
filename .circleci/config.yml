@@ -59,7 +59,7 @@ jobs:
       - run:
           name: Building container
           command: |
-            docker build --tag $DOCKER_LOGIN/$DOCKER_NAME 
+            docker build --tag $DOCKER_LOGIN/$DOCKER_NAME \
               --build-arg DSN=${SENTRY_DSN} \
               --build-arg HOST_URL=${HOST_URL} \
               .
