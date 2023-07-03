@@ -3,9 +3,8 @@ ENV PYTHONUNBUFFERED 1
 ARG DSN
 ARG HOST_URL
 
-RUN mkdir /p13_lettings
-WORKDIR /p13_lettings
 COPY . /p13_lettings/
+WORKDIR /p13_lettings
 
 RUN pip install -r requirements.txt && \
     python3 setup_env_file.py && \
