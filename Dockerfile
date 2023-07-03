@@ -10,4 +10,5 @@ COPY . /p13_lettings/
 RUN pip install -r requirements.txt && \
     python3 setup_env_file.py && \
     python3 manage.py create_env -dsn $DSN -host $HOST_URL
-CMD python3 manage.py runserver 0.0.0.0:8000
+EXPOSE 8000
+CMD python3 manage.py runserver
