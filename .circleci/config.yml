@@ -30,20 +30,6 @@ jobs:
             . venv/bin/activate
             pytest
 
-  build-sentry:
-    docker:
-      - image: cimg/node:19.4
-    steps:
-      - checkout # check out the code in the project directory
-      - run:
-          name: Sentry release
-          command: |
-            curl -sL https://sentry.io/get-cli/ | bash
-            export SENTRY_RELEASE=$(sentry-cli releases propose-version)
-            sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
-            sentry-cli releases set-commits --auto $SENTRY_RELEASE
-            sentry-cli releases finalize $SENTRY_RELEASE
-
   containerize-and-deploy:
     docker:
       - image: cimg/python:3.10.2
@@ -75,20 +61,35 @@ jobs:
             docker tag $DOCKER_LOGIN/$DOCKER_NAME $AZURE_REPO_URL/$DOCKER_NAME
             docker push $AZURE_REPO_URL/$DOCKER_NAME
 
+  sentry-release:
+    docker:
+      - image: cimg/node:19.4
+    steps:
+      - checkout # check out the code in the project directory
+      - run:
+          name: Notifying Sentry of new release
+          command: |
+            curl -sL https://sentry.io/get-cli/ | bash
+            export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+            sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+            sentry-cli releases set-commits --auto $SENTRY_RELEASE
+            sentry-cli releases finalize $SENTRY_RELEASE
+
 workflows:
   main:
     jobs:
       - build-and-test
-      - build-sentry:
+      - containerize-and-deploy:
           requires:
             - build-and-test
           filters:
             branches:
               only:
                 - main
-      - containerize-and-deploy:
+      - sentry-release:
           requires:
             - build-and-test
+            - containerize-and-deploy
           filters:
             branches:
               only:
