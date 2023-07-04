@@ -88,7 +88,6 @@ workflows:
                 - main
       - sentry-release:
           requires:
-            - build-and-test
             - containerize-and-deploy
           filters:
             branches:
